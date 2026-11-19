@@ -1,44 +1,40 @@
-@extends('layouts.app')
-@section('title', 'Orang Tua/Wali')
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Data Orang Tua/Wali</h4>
-    <a href="{{ route('orang-tua.create') }}" class="btn btn-success">+ Tambah</a>
-</div>
-<form method="GET" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="q" value="{{ request('q') }}" class="form-control" placeholder="Cari nama">
-        <button class="btn btn-outline-secondary">Cari</button>
+@php
+    $o = $orangTua ?? null;
+@endphp
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label">Nama</label>
+        <input type="text" name="nama" value="{{ old('nama', $o?->nama) }}"
+               class="form-control @error('nama') is-invalid @enderror">
+        @error('nama')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
-</form>
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0">
-            <thead>
-                <tr><th>Nama</th><th>NIK</th><th>No. Telepon</th><th>Jumlah Balita</th><th class="text-end">Aksi</th></tr>
-            </thead>
-            <tbody>
-            @forelse ($orangTua as $o)
-                <tr>
-                    <td>{{ $o->nama }}</td>
-                    <td>{{ $o->nik ?? '-' }}</td>
-                    <td>{{ $o->no_telepon ?? '-' }}</td>
-                    <td>{{ $o->balita_count }}</td>
-                    <td class="text-end">
-                        <a href="{{ route('orang-tua.edit', $o) }}" class="btn btn-sm btn-outline-primary">Ubah</a>
-                        <form action="{{ route('orang-tua.destroy', $o) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Hapus data ini?')">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="5" class="text-center text-muted py-4">Belum ada data.</td></tr>
-            @endforelse
-            </tbody>
-        </table>
+
+    <div class="col-md-6">
+        <label class="form-label">NIK (16 digit)</label>
+        <input type="text" name="nik" value="{{ old('nik', $o?->nik) }}"
+               class="form-control @error('nik') is-invalid @enderror">
+        @error('nik')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">No. Telepon</label>
+        <input type="text" name="no_telepon" value="{{ old('no_telepon', $o?->no_telepon) }}"
+               class="form-control @error('no_telepon') is-invalid @enderror">
+        @error('no_telepon')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Alamat</label>
+        <textarea name="alamat" rows="3" class="form-control @error('alamat') is-invalid @enderror">{{ old('alamat', $o?->alamat) }}</textarea>
+        @error('alamat')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
 </div>
-<div class="mt-3">{{ $orangTua->links() }}</div>
-@endsection
