@@ -13,7 +13,7 @@ Proyek ini adalah tugas besar mata kuliah Proyek Perangkat Lunak (SDG 3: Good He
 
 | Kelompok | Isi |
 |----------|-----|
-| Data dasar | Data balita dan orang tua/wali, ibu hamil, wilayah dan unit posyandu |
+| Data dasar | Data balita dan orang tua/wali, ibu hamil, unit posyandu |
 | Gizi dan tumbuh kembang | Pengukuran pertumbuhan, status gizi otomatis, perkembangan anak, menu MPASI |
 | Imunisasi | Master vaksin, pencatatan imunisasi dan jadwalnya, data KIPI |
 | Kegiatan dan pelaporan | Data kader, jadwal kegiatan, absensi kader, laporan bulanan, stok vitamin dan obat |
@@ -108,7 +108,7 @@ php artisan key:generate
 ```bash
 php artisan migrate --seed
 ```
-- Seeder membuat 3 akun contoh, satu wilayah, satu unit posyandu, dan satu data kader (lihat bagian 3).
+- Seeder membuat 3 akun contoh, 2 unit posyandu, 2 orang tua/wali, dan 5 balita (lihat bagian 3).
 - Jangan menjalankan `php artisan db:seed` dua kali, karena email akun contoh harus unik dan akan error.
 - Untuk mengulang dari nol (**menghapus semua data lokal**): `php artisan migrate:fresh --seed`.
 
@@ -124,13 +124,15 @@ Buka `http://localhost:8000`. Laragon harus dalam keadaan menyala.
 
 Semua akun contoh memakai kata sandi `password`.
 
-| Peran | Email | Kata sandi |
-|-------|-------|------------|
-| **Admin** | `admin@posyanduku.test` | `password` |
-| **Kader** | `kader@posyanduku.test` | `password` |
-| **Orang Tua** | `ortu@posyanduku.test` | `password` |
+Login bisa memakai email **atau** username.
 
-Data contoh lain dari seeder: wilayah **Kelurahan Contoh** dan unit **Posyandu Melati (RW 01)**.
+| Peran | Email | Username | Kata sandi |
+|-------|-------|----------|------------|
+| **Admin** | `admin@posyanduku.test` | `admin` | `password` |
+| **Kader** | `kader@posyanduku.test` | `kader` | `password` |
+| **Orang Tua** | `ortu@posyanduku.test` | `ortu` | `password` |
+
+Data contoh lain dari seeder: unit **Posyandu Melati (RW 01)** dan **Posyandu Mawar (RW 02)**, 2 orang tua/wali, serta 5 balita.
 
 > [!WARNING]
 > Seeder ini hanya untuk pengembangan. Jangan dipakai di server produksi dengan kata sandi `password`.
@@ -299,7 +301,7 @@ Lakukan untuk setiap PR sebelum digabung:
 | Foreign key | Data master yang masih dipakai tidak boleh terhapus | `restrictOnDelete()` |
 | Bahasa | Label, tombol, dan pesan di antarmuka memakai Bahasa Indonesia | |
 
-Tabel inti yang sudah tersedia di `develop`: `users` (dengan kolom `role` dan `status`), `wilayah`, `unit_posyandu`, `orang_tua`, `balita`, dan `kader`. Model dan relasinya ada di `app/Models`. Tabel fitur baru dibuat oleh pemilik fiturnya, dengan migration yang berurutan (tabel induk lebih dulu daripada tabel yang punya foreign key).
+Tabel inti yang sudah tersedia di `develop`: `users` (dengan kolom `username` dan `role`), `unit_posyandu`, `orang_tua`, `balita`, dan `balita_orang_tua`. Tabel `kader` dibuat oleh pemilik fitur kader dan merujuk `unit_posyandu` lewat kolom `id_unit`. Model dan relasinya ada di `app/Models`. Tabel fitur baru dibuat oleh pemilik fiturnya, dengan migration yang berurutan (tabel induk lebih dulu daripada tabel yang punya foreign key).
 
 ### Panduan tampilan (UI)
 

@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('unit_posyandu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wilayah_id')->constrained('wilayah')->restrictOnDelete();
             $table->string('nama_pos');
             $table->string('rw_dusun');
             $table->text('alamat');

@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('orang_tua', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('id_user')->nullable()->unique()->constrained('users')->nullOnDelete();
             $table->string('nama');
-            $table->string('nik', 16)->nullable()->unique();
-            $table->string('no_telepon', 20)->nullable();
+            $table->char('nik', 16)->unique();
+            $table->enum('hubungan', ['ayah', 'ibu', 'wali']);
+            $table->string('no_hp', 20)->nullable();
             $table->text('alamat')->nullable();
             $table->timestamps();
         });
