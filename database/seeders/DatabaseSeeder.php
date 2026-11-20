@@ -50,5 +50,7 @@ class DatabaseSeeder extends Seeder
                 'penolong_persalinan' => $penolong,
             ])->orangTua()->attach(collect($ortu)->pluck('id'));
         }
+
+        $this->call(PengumumanSeeder::class);
     }
 }
