@@ -57,12 +57,31 @@ class Sprint1FadlyTest extends TestCase
         $ortu = $this->akun('orang_tua');
 
         $this->actingAs($ortu)->get('/balita')->assertForbidden();
+        $this->get('/unit-posyandu')->assertForbidden();
         $respons = $this->get(route('dashboard.orang-tua'))->assertOk();
         $this->assertStringContainsString('no-store', $respons->headers->get('Cache-Control'));
 
         $this->post('/logout')->assertRedirect(route('login'));
         $this->assertGuest();
         $this->get('/balita')->assertRedirect(route('login'));
+    }
+
+    public function test_unit_crud_validasi_dan_tidak_bisa_dihapus_bila_dipakai(): void
+    {
+        $this->actingAs($this->akun('kader'));
+
+        $this->post('/unit-posyandu', [])->assertSessionHasErrors(['nama_pos', 'rw_dusun', 'alamat']);
+        $this->post('/unit-posyandu', ['nama_pos' => 'Mawar', 'rw_dusun' => 'RW 2', 'alamat' => 'Jl. B'])
+            ->assertRedirect('/unit-posyandu');
+
+        $unit = $this->unit();
+        $this->delete("/unit-posyandu/{$unit->id}")->assertRedirect()->assertSessionMissing('error');
+        $this->assertModelMissing($unit);
+
+        $dipakai = $this->unit();
+        Balita::create($this->dataBalita($dipakai));
+        $this->delete("/unit-posyandu/{$dipakai->id}")->assertSessionHas('error');
+        $this->assertModelExists($dipakai);
     }
 
     public function test_nik_balita_harus_16_digit_dan_unik_serta_tanggal_tidak_masa_depan(): void
