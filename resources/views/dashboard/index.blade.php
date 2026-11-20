@@ -11,6 +11,7 @@
 </div>
 
 <x-pengumuman-terbaru />
+<x-stok-peringatan />
 
 @if ($staf)
     <div class="row g-3">
