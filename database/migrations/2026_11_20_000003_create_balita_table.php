@@ -10,10 +10,9 @@ return new class extends Migration
     {
         Schema::create('balita', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orang_tua_id')->constrained('orang_tua')->restrictOnDelete();
-            $table->foreignId('unit_posyandu_id')->constrained('unit_posyandu')->restrictOnDelete();
+            $table->foreignId('id_unit')->constrained('unit_posyandu')->restrictOnDelete();
             $table->string('nama');
-            $table->string('nik', 16)->nullable()->unique();
+            $table->char('nik', 16)->unique();
             $table->date('tanggal_lahir');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->decimal('berat_lahir', 4, 2)->nullable();

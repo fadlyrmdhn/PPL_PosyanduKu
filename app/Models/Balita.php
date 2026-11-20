@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Balita extends Model
 {
     protected $table = 'balita';
 
     protected $fillable = [
-        'orang_tua_id', 'unit_posyandu_id', 'nama', 'nik', 'tanggal_lahir',
-        'jenis_kelamin', 'berat_lahir', 'panjang_lahir', 'usia_kehamilan',
-        'penolong_persalinan',
+        'id_unit', 'nama', 'nik', 'tanggal_lahir', 'jenis_kelamin',
+        'berat_lahir', 'panjang_lahir', 'usia_kehamilan', 'penolong_persalinan',
     ];
 
     protected function casts(): array
@@ -20,13 +20,13 @@ class Balita extends Model
         return ['tanggal_lahir' => 'date'];
     }
 
-    public function orangTua(): BelongsTo
-    {
-        return $this->belongsTo(OrangTua::class, 'orang_tua_id');
-    }
-
     public function unitPosyandu(): BelongsTo
     {
-        return $this->belongsTo(UnitPosyandu::class, 'unit_posyandu_id');
+        return $this->belongsTo(UnitPosyandu::class, 'id_unit');
+    }
+
+    public function orangTua(): BelongsToMany
+    {
+        return $this->belongsToMany(OrangTua::class, 'balita_orang_tua', 'id_balita', 'id_orang_tua');
     }
 }
