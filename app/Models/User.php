@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[Fillable(['nama', 'username', 'email', 'password', 'role'])]
@@ -28,5 +29,11 @@ class User extends Authenticatable
             'kader' => 'dashboard.kader',
             default => 'dashboard.orang-tua',
         };
+    }
+
+    /** Profil kader yang terhubung dengan akun ini. */
+    public function kader(): HasOne
+    {
+        return $this->hasOne(Kader::class, 'id_user');
     }
 }
