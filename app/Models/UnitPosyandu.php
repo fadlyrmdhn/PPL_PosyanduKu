@@ -18,6 +18,16 @@ class UnitPosyandu extends Model
         return $this->hasMany(Balita::class, 'id_unit');
     }
 
+    public function kader(): HasMany
+    {
+        return $this->hasMany(Kader::class, 'id_unit');
+    }
+
+    public function jadwalKegiatan(): HasMany
+    {
+        return $this->hasMany(JadwalKegiatan::class, 'id_unit');
+    }
+
     /** Unit dianggap terpakai bila masih dirujuk balita atau kader (tabel kader dibuat anggota lain). */
     public function masihDipakai(): bool
     {
