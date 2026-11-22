@@ -1,27 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MenuMpasiController;
-use App\Http\Controllers\PengukuranController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () => auth()->check()
+    ? redirect()->route(auth()->user()->homeRoute())
+    : redirect()->route('login'));
 
-/*
-|--------------------------------------------------------------------------
-| PBI-15 Menu MPASI (FR-17)
-| Akses: Admin
-|--------------------------------------------------------------------------
-*/
-Route::resource('menu-mpasi', MenuMpasiController::class)
-    ->middleware(['auth', 'role:admin']);
-
-/*
-|--------------------------------------------------------------------------
-| PBI-13 Pengukuran Pertumbuhan & Status Gizi (FR-15)
-| Akses: Kader (dan Admin)
-|--------------------------------------------------------------------------
-*/
-Route::resource('pengukuran', PengukuranController::class)
-    ->middleware(['auth', 'role:kader,admin']);
+// Memuat semua route fitur dari routes/fitur/*.php (jangan diubah, tambah file baru saja)
+foreach (glob(__DIR__.'/fitur/*.php') as $file) {
+    require $file;
+}

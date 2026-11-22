@@ -2,40 +2,39 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
+#[Fillable(['nama', 'username', 'email', 'password', 'role'])]
+#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-        ];
+        return ['password' => 'hashed'];
+    }
+
+    /** Nama route halaman awal sesuai peran. */
+    public function homeRoute(): string
+    {
+        return match ($this->role) {
+            'admin' => 'dashboard.admin',
+            'kader' => 'dashboard.kader',
+            default => 'dashboard.orang-tua',
+        };
+    }
+
+    /** Profil kader yang terhubung dengan akun ini. */
+    public function kader(): HasOne
+    {
+        return $this->hasOne(Kader::class, 'id_user');
     }
 
     public function isAdmin(): bool
@@ -48,4 +47,3 @@ class User extends Authenticatable
         return $this->role === 'kader';
     }
 }
-

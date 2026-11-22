@@ -3,39 +3,52 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Balita extends Model
 {
     protected $table = 'balita';
 
     protected $fillable = [
-        'nama',
-        'jenis_kelamin',
-        'tanggal_lahir',
-        'nama_orang_tua',
-        'alamat',
-        'id_user',
+        'id_unit', 'nama', 'nik', 'tanggal_lahir', 'jenis_kelamin',
+        'berat_lahir', 'panjang_lahir', 'usia_kehamilan', 'penolong_persalinan',
     ];
 
     protected function casts(): array
     {
-        return [
-            'tanggal_lahir' => 'date',
-        ];
+        return ['tanggal_lahir' => 'date'];
     }
 
-    // Relasi ke pengukuran
+    public function unitPosyandu(): BelongsTo
+    {
+        return $this->belongsTo(UnitPosyandu::class, 'id_unit');
+    }
+
+    public function orangTua(): BelongsToMany
+    {
+        return $this->belongsToMany(OrangTua::class, 'balita_orang_tua', 'id_balita', 'id_orang_tua');
+    }
+
+    public function imunisasi(): HasMany
+    {
+        return $this->hasMany(Imunisasi::class, 'id_balita');
+    }
+
+    public function pemberianVitamin(): HasMany
+    {
+        return $this->hasMany(PemberianVitamin::class, 'id_balita');
+    }
+
+    public function jadwalImunisasi(): HasMany
+    {
+        return $this->hasMany(JadwalImunisasi::class, 'id_balita');
+    }
+
     public function pengukuran(): HasMany
     {
         return $this->hasMany(Pengukuran::class, 'id_balita');
-    }
-
-    // Relasi ke user (kader pendamping)
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'id_user');
     }
 
     /**
