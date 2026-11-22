@@ -45,4 +45,18 @@ class Balita extends Model
     {
         return $this->hasMany(JadwalImunisasi::class, 'id_balita');
     }
+
+    public function pengukuran(): HasMany
+    {
+        return $this->hasMany(Pengukuran::class, 'id_balita');
+    }
+
+    /**
+     * Hitung usia dalam bulan pada tanggal tertentu.
+     */
+    public function usiabulanPada(\Carbon\Carbon|string $tanggal): int
+    {
+        $tgl = \Carbon\Carbon::parse($tanggal);
+        return (int) $this->tanggal_lahir->diffInMonths($tgl);
+    }
 }

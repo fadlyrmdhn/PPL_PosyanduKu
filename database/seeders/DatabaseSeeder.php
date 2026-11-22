@@ -54,5 +54,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PengumumanSeeder::class);
         $this->call(StokVitaminObatSeeder::class);
         $this->call(VaksinSeeder::class);
+        $this->call(StandarAntropometriSeeder::class);
     }
 }

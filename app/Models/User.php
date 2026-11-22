@@ -36,4 +36,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Kader::class, 'id_user');
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isKader(): bool
+    {
+        return $this->role === 'kader';
+    }
 }

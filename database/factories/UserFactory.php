@@ -25,4 +25,24 @@ class UserFactory extends Factory
     {
         return $this->state(fn () => ['role' => $role]);
     }
+
+    /**
+     * State untuk admin.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * State untuk kader.
+     */
+    public function kader(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'kader',
+        ]);
+    }
 }
