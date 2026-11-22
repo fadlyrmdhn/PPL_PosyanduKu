@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{{ asset('css/posyanduku.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
 <header class="topbar d-flex justify-content-between align-items-center">
@@ -29,7 +30,7 @@
 </header>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-3 col-lg-2 sidebar">
+        <nav class="col-md-3 col-lg-2 sidebar position-sticky" style="top: 3.9rem; height: calc(100vh - 3.9rem);">
             <ul class="nav flex-column gap-1">
                 {{-- Menu dimuat otomatis dari resources/views/layouts/menu/*.blade.php (satu file per fitur) --}}
                 @foreach (glob(resource_path('views/layouts/menu/*.blade.php')) as $menu)
@@ -48,5 +49,7 @@
         </main>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@stack('scripts')
 </body>
 </html>

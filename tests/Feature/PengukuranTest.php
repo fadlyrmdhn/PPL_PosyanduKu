@@ -6,6 +6,7 @@ use App\Models\Balita;
 use App\Models\Pengukuran;
 use App\Models\StandarAntropometri;
 use App\Models\StatusGizi;
+use App\Models\UnitPosyandu;
 use App\Models\User;
 use App\Services\StatusGiziService;
 use Carbon\Carbon;
@@ -35,8 +36,17 @@ class PengukuranTest extends TestCase
 
         $this->kader = User::factory()->create(['role' => 'kader']);
 
+        // Buat unit posyandu terlebih dahulu karena id_unit wajib ada di tabel balita
+        $unit = UnitPosyandu::create([
+            'nama_pos' => 'Posyandu Test',
+            'rw_dusun' => 'RW 01',
+            'alamat'   => 'Jl. Test No. 1',
+        ]);
+
         $this->balita = Balita::create([
+            'id_unit'       => $unit->id,
             'nama'          => 'Budi Santoso',
+            'nik'           => '3273010101240001',  // 16 karakter, unik
             'jenis_kelamin' => 'L',
             'tanggal_lahir' => Carbon::parse('2024-01-01'),
         ]);
