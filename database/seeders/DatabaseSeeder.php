@@ -55,5 +55,8 @@ class DatabaseSeeder extends Seeder
         $this->call(StokVitaminObatSeeder::class);
         $this->call(VaksinSeeder::class);
         $this->call(StandarAntropometriSeeder::class);
+
+        // Data contoh (kader, jadwal, pengukuran, imunisasi, MPASI). Harus dipanggil terakhir.
+        $this->call(DemoSeeder::class);
     }
 }
