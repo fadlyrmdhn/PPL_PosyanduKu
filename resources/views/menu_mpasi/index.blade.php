@@ -57,6 +57,6 @@
             </tbody>
         </table>
     </div>
-    <div class="pagination">{{ $menuList->links('pagination::simple-default') }}</div>
+    <div class="pagination">{{ $menuList->links() }}</div>
 @endif
 @endsection
